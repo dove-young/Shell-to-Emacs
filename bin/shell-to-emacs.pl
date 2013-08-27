@@ -59,11 +59,16 @@ sub ec {
   system       ( "exec emacsclient -c " . join( " ", @params) . " &");
 }
 
+sub manual_entry {
+  my ($man) = @_;
+  my $escaped_man = _escape_str($man);
+  
+  print STDERR ("exec $EVAL" . "\"(manual-entry ".  $escaped_man . ")\" &\n");
+  system       ("exec $EVAL" . "\"(manual-entry ".  $escaped_man . ")\" &");
 
-# function ff {
-#     str="(find-file \"${1}\")"
-#     emacsclient -e $str
-# }
+}
+
+
 
                      # - is illegal in function name in Perl
 $action =~ s/-/_/;   # but legal in Lisp; so replace it.
