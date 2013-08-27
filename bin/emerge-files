@@ -1,0 +1,8 @@
+#!/bin/bash
+set -x
+#echo $*
+file_A=$1
+file_B=$2
+file_out=${2}.out
+emacsclient -c  --eval "(emerge-files nil \"${file_A}\" \"${file_B}\" \"${file_out}\")"
+set +x
