@@ -68,6 +68,11 @@ sub manual_entry {
 
 }
 
+sub esh {
+
+  print STDERR ("exec $EVAL" . "\"(shell)\" &\n");
+  system       ("exec $EVAL" . "\"(shell)\" &");
+}
 
 
                      # - is illegal in function name in Perl
