@@ -20,6 +20,9 @@ sub vc_dir {
 
   my ($path) = @_;
   my $realPath = Cwd::abs_path($path);
+  if (-f $realPath) {
+    $realPath = dirname ($realPath);
+  }
   my $escaped_Path =  _escape_str( ${realPath} );
 
   print STDERR ("exec $EVAL" . "\"(vc-dir ".  $escaped_Path . ")\" &\n");
@@ -37,8 +40,33 @@ sub dired {
   system       ("exec $EVAL" . "\"(dired ".  $escaped_Path . ")\" &");
 
 }
-                     # - is illegal in function name
-$action =~ s/-/_/;   # but legal in Lisp
+
+sub ff {
+
+  my ($file) = @_;
+  my $realPath = Cwd::abs_path($file);
+  my $escaped_Path =  _escape_str( ${realPath} );
+
+  print STDERR ("exec $EVAL" . "\"(find-file ".  $escaped_Path . ")\" &\n");
+  system       ("exec $EVAL" . "\"(find-file ".  $escaped_Path . ")\" &");
+
+}
+
+sub ec {
+  my @params = @_;
+
+  print STDERR ( "exec emacsclient -c " . join( " ", @params) . " & \n");
+  system       ( "exec emacsclient -c " . join( " ", @params) . " &");
+}
+
+
+# function ff {
+#     str="(find-file \"${1}\")"
+#     emacsclient -e $str
+# }
+
+                     # - is illegal in function name in Perl
+$action =~ s/-/_/;   # but legal in Lisp; so replace it.
 
 print STDERR "action = $action\n";
 
